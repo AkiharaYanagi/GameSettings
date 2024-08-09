@@ -46,6 +46,16 @@ void Main()
 void Init ()
 {
 	//カーソル位置にウィンドウを移動
-	WND_UTL::MoveWindow_toCursor ();
+//	WND_UTL::MoveWindow_toCursor ();
+// 
+//カーソル位置の取得
+	POINT cursorPos;
+	::GetCursorPos ( & cursorPos );
+	cursorPos.x -= 400;
+	cursorPos.y -= 15;
+	s3d::Point pt { cursorPos.x, cursorPos.y };
+
+	s3d::Window::SetPos ( pt );
+
 }
 

@@ -37,6 +37,12 @@ namespace GAME
 		//選択位置
 		size_t selected_index = 0;
 
+		//対象ファイルパス
+		s3d::String filePath{ U"filePath" };
+
+		//状態表示
+		s3d::String strDiag { U"Init." };
+
 	public:
 		Ctrl_KeyConfig ();
 		Ctrl_KeyConfig ( const Ctrl_KeyConfig & rhs ) = delete;

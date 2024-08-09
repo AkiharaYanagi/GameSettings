@@ -62,10 +62,12 @@ namespace GAME
 		if ( FileSystem::Exists ( FILE_NAME ) )
 		{
 			Load ( s3d::FilePath ( FILE_NAME ) );
+			strDiag.assign (U"読み込みました.");
 		}
 		else
 		{
 			Init ();
+			strDiag.assign (U"対象が読み込めないため初期値で開始しました.");
 		}
 
 		//文字列に反映
@@ -73,6 +75,15 @@ namespace GAME
 		{
 			di_strs [i].assign ( DeviceInput_ToString ( device_inputs [ i ] ) ) ;
 		}
+
+		//カレントディレクトリの取得
+		wchar_t CRNT [ MAX_PATH ];
+		::GetCurrentDirectory ( MAX_PATH, CRNT );
+		s3d::String crnt_path = Unicode::FromWstring ( CRNT );
+
+		crnt_path.append ( U"\\" ) += FILE_NAME;
+		filePath.assign ( crnt_path );
+
 	}
 
 
@@ -217,7 +228,11 @@ namespace GAME
 
 		//保存ファイル
 		//指定なしのときはデフォルト(カレントディレクトリ＋"keyconfig.dat")
+
+		font ( filePath ).draw ( 20, 500 );
+		font ( strDiag ).draw ( 20, 520 );
 	}
+
 
 	s3d::String Ctrl_KeyConfig::GamePadInput_ToString ( GamePadInput gpi )
 	{
@@ -273,6 +288,8 @@ namespace GAME
 			bw.write ( (uint8)( di.GetPad ().GetLever() ) );
 			bw.write ( (uint8)di.GetKey () );
 		}
+
+		strDiag.assign(U"保存しました.");
 	}
 
 	void Ctrl_KeyConfig::Load ( s3d::Optional < FilePath > path )
