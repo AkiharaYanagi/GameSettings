@@ -45,6 +45,15 @@ void Main()
 
 void Init ()
 {
+#if 1
+
+
+	//中央
+	s3d::Window::Centering ();
+
+
+#else
+
 	//カーソル位置にウィンドウを移動
 //	WND_UTL::MoveWindow_toCursor ();
 // 
@@ -56,6 +65,9 @@ void Init ()
 	s3d::Point pt { cursorPos.x, cursorPos.y };
 
 	s3d::Window::SetPos ( pt );
+
+
+#endif // 0
 
 }
 
