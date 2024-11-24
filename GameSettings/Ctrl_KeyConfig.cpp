@@ -20,14 +20,14 @@ namespace GAME
 		U"↓",
 		U"←",
 		U"→",
-		U"ボタン1",
-		U"ボタン2",
-		U"ボタン3",
-		U"ボタン4",
-		U"ボタン5",
-		U"ボタン6",
-		U"ボタン7",
-		U"ボタン8",
+		U"ボタン1 (小攻撃)",
+		U"ボタン2 (中攻撃)",
+		U"ボタン3 (大攻撃)",
+		U"ボタン4 (特大攻撃)",
+		U"ボタン5 (必殺技)",
+		U"ボタン6 (ダッシュ)",
+		U"ボタン7 (ポーズ)",
+		U"ボタン8 (リセット)",
 	};
 
 	const uint32 Ctrl_KeyConfig::NUM_STG = 24;
@@ -62,7 +62,6 @@ namespace GAME
 		if ( FileSystem::Exists ( FILE_NAME ) )
 		{
 			Load ( s3d::FilePath ( FILE_NAME ) );
-			strDiag.assign (U"読み込みました.");
 		}
 		else
 		{
@@ -113,6 +112,8 @@ namespace GAME
 		device_inputs [ 21 ].SetKeyboard ( SIK_H );
 		device_inputs [ 22 ].SetKeyboard ( SIK_J );
 		device_inputs [ 23 ].SetKeyboard ( SIK_K );
+
+		selected_index = 0;
 	}
 
 
@@ -172,6 +173,13 @@ namespace GAME
 			ctrl_KeyConfig.Load ( path );
 #endif // 0
 		}
+
+		//デフォルトボタン
+		if ( s3d::SimpleGUI::Button ( U"デフォルト" , s3d::Vec2 ( 320, 400 ) ) )
+		{
+			Init ();
+			ResetDiStr ();
+		}
 	}
 
 
@@ -224,6 +232,26 @@ namespace GAME
 			font ( di_strs [ i ] ).draw ( dx + 200, dy );
 			
 		}
+
+
+		//test
+		//test
+		const GMPD & gmpd = SivInput::Inst()->GetPadState ();
+
+
+		font( U"axes[0]={}"_fmt( gmpd.axes[AXIS_X] ) ).draw(500, 300);
+		font( U"axes[1]={}"_fmt( gmpd.axes[AXIS_Y] ) ).draw(500, 320);
+		font( U"axes[2]={}"_fmt( gmpd.axes[AXIS_Z] ) ).draw(500, 340);
+		font( U"axes[3]={}"_fmt( gmpd.axes[3] ) ).draw(500, 360);
+		font( U"axes[4]={}"_fmt( gmpd.axes[4] ) ).draw(500, 380);
+		font( U"axes[5]={}"_fmt( gmpd.axes[5] ) ).draw(500, 400);
+
+		font( U"povUp={}"_fmt( gmpd.povUp.pressed() ) ).draw(300, 300);
+		font( U"povDown={}"_fmt( gmpd.povDown.pressed() ) ).draw(300, 320);
+		font( U"povLeft={}"_fmt( gmpd.povLeft.pressed() ) ).draw(300, 340);
+		font( U"povRight={}"_fmt( gmpd.povRight.pressed() ) ).draw(300, 360);
+
+		font( U"povD8={}"_fmt( gmpd.povD8() ) ).draw(300, 380);
 
 
 		//保存ファイル
@@ -332,6 +360,18 @@ namespace GAME
 
 			default:break;
 			}
+
+			strDiag.assign (U"読み込みました.");
+		}
+	}
+
+
+	void Ctrl_KeyConfig::ResetDiStr ()
+	{
+		for ( size_t i = 0; i < di_strs.size (); ++ i )
+		{
+			DeviceInput di = device_inputs [ i ];
+			di_strs [ i ] = DeviceInput_ToString ( di );
 		}
 	}
 

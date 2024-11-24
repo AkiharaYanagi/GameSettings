@@ -1,5 +1,5 @@
 ﻿# include <Siv3D.hpp> // Siv3D v0.6.13
-#include "03_GameInput.h"
+#include "Game.h"
 #include "Ctrl_KeyConfig.h"
 
 
@@ -21,7 +21,6 @@ void Main()
 	//入力の監理
 	SivInput::Create ();
 
-
 	//========================================
 	//メインループ
 	bool init = F;
@@ -30,9 +29,8 @@ void Main()
 		//1回のみ初期化
 		if ( ! init ) { Init (); init = T; }
 
-		//毎回の更新
-		const Array<Input> & keys = s3d::Keyboard::GetAllInputs();
-		SivInput::Inst()->Update ( keys );
+		//入力の更新
+		SivInput::Inst()->Update ();
 
 		//動作
 		ctrl_KeyConfig.Move ();
@@ -54,7 +52,12 @@ void Init ()
 
 #else
 
+	//カーソル位置のモニタの中心
+	WND_UTL::MoveWindow_toCenter_onCursor ();
+
+
 	//カーソル位置にウィンドウを移動
+#if 0
 //	WND_UTL::MoveWindow_toCursor ();
 // 
 //カーソル位置の取得
@@ -65,6 +68,7 @@ void Init ()
 	s3d::Point pt { cursorPos.x, cursorPos.y };
 
 	s3d::Window::SetPos ( pt );
+#endif // 0
 
 
 #endif // 0

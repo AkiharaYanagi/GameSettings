@@ -43,6 +43,14 @@ namespace GAME
 		//状態表示
 		s3d::String strDiag { U"Init." };
 
+
+
+		//test
+		Array < String > strs_gmpd;
+
+
+
+
 	public:
 		Ctrl_KeyConfig ();
 		Ctrl_KeyConfig ( const Ctrl_KeyConfig & rhs ) = delete;
@@ -62,6 +70,8 @@ namespace GAME
 
 	private:
 		static const char32_t * FILE_NAME;
+
+		void ResetDiStr ();
 	};
 
 
